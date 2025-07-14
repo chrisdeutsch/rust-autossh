@@ -38,8 +38,8 @@ jobs:
           prefix=target/${{ matrix.job.target }}/release
 
           case ${{ matrix.job.target }} in
-            *-windows-*) bin_name="autossh.exe"
-            *) bin_name="autossh"
+            *-windows-*) bin_name="autossh.exe";;
+            *) bin_name="autossh";;
           esac
 
           echo "path=${prefix}/${bin_name}" >> $GITHUB_OUTPUT
