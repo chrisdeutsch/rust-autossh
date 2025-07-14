@@ -11,9 +11,12 @@ jobs:
     strategy:
       matrix:
         job:
-          - { target: x86_64-unknown-linux-gnu, os: ubuntu-latest }
-          - { target: x86_64-unknown-linux-musl, os: ubuntu-latest }
-          - { target: x86_64-pc-windows-msvc, os: windows-2025 }
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-latest
+          - target: x86_64-pc-windows-msvc
+            os: windows-2025
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,9 +29,19 @@ jobs:
       - name: Build
         run: cargo build --locked --release --target=${{ matrix.job.target }}
 
+      - name: Get binary path
+        id: binary-path
+        run: |
+          prefix=target/${{ matrix.job.target }}/release
+
+          case ${{ matrix.job.target }} in
+            *-windows*) echo "path=${prefix}/autossh.exe" >> $GITHUB_OUTPUT;;
+            *) echo "path=${prefix}/autossh" >> $GITHUB_OUTPUT;;
+          esac
+
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: autossh-${{ matrix.job.target }}
-          path: target/${{ matrix.job.target }}/release/autossh*
+          path: ${{ steps.binary-path.outputs.path }}
           if-no-files-found: error
