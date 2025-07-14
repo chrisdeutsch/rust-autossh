@@ -22,5 +22,5 @@ jobs:
         with:
           targets: ${{ matrix.job.target }}
       - name: Build
-        run: cargo --locked --release --target=${{ matrix.job.target }}
+        run: cargo build --locked --release --target=${{ matrix.job.target }}
 
