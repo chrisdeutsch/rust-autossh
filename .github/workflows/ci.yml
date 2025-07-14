@@ -1,8 +1,11 @@
 name: CI
 
 on:
-  #push:
   pull_request:
+
+defaults:
+  run:
+    shell: bash -eu {0}
 
 jobs:
   build:
@@ -31,7 +34,6 @@ jobs:
 
       - name: Get binary path
         id: binary-path
-        shell: bash -e
         run: |
           prefix=target/${{ matrix.job.target }}/release
 
