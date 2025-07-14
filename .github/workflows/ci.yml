@@ -30,4 +30,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: autossh-${{ matrix.job.target }}
-          path: target/release/autossh
+          path: target/${{ matrix.job.target }}/release/autossh
