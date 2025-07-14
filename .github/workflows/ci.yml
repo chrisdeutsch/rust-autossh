@@ -17,10 +17,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Install rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.job.target }}
+
       - name: Build
         run: cargo build --locked --release --target=${{ matrix.job.target }}
 
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: autossh-${{ matrix.job.target }}
+          path: target/release/autossh
