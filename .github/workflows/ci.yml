@@ -31,8 +31,11 @@ jobs:
         with:
           targets: ${{ matrix.job.target }}
 
+      - name: Install cross
+        run: cargo install cross
+
       - name: Build
-        run: cargo build --locked --release --target=${{ matrix.job.target }}
+        run: cross build --locked --release --target=${{ matrix.job.target }}
 
       - name: Binary path
         id: binary-path
