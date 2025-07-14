@@ -32,15 +32,17 @@ jobs:
       - name: Build
         run: cargo build --locked --release --target=${{ matrix.job.target }}
 
-      - name: Get binary path
+      - name: Binary path
         id: binary-path
         run: |
           prefix=target/${{ matrix.job.target }}/release
 
           case ${{ matrix.job.target }} in
-            *-windows*) echo "path=${prefix}/autossh.exe" >> $GITHUB_OUTPUT;;
-            *) echo "path=${prefix}/autossh" >> $GITHUB_OUTPUT;;
+            *-windows-*) bin_name="autossh.exe"
+            *) bin_name="autossh"
           esac
+
+          echo "path=${prefix}/${bin_name}" >> $GITHUB_OUTPUT
 
       - name: Upload
         uses: actions/upload-artifact@v4
